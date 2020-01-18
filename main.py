@@ -4,7 +4,7 @@ import time
 import os
 import pygame
 
-#uses pygame the wrong way but plays tts files one at a time
+#uses pygame.mixer.music the wrong way but plays tts files one at a time
 def play(filename):
     pygame.mixer.init()
     pygame.mixer.music.load(filename)
@@ -20,21 +20,22 @@ def stringifyfile(inputfilename):
     input1 = ' '
     for line in inputfile:
         input1 += line
-    print("TEXT BEING READ: " + input1)
+    print("TEXT BEING READ TO STRING: \n" + input1)
     return input1
 
+def playdebugmessage():
+    filename = 'debugmessage.mp3'
+    input1 = 'bruh'
+    tts = gTTS(text=input1,lang='es')
+    tts.save(filename)
+    pygame.mixer.init()
+    pygame.mixer.music.load(filename)
+    pygame.mixer.music.play(0)
+    print('debugmessage')
 
-filename = 'debugmessage.wav'
-input1 = stringifyfile('harrypotter1911.txt')
-tts = gTTS(text=input1 , lang='en-au')
-tts.save(filename)
-os.system('mpg321 filename')
+os.system('echo "hello world!"')
+playdebugmessage()
 
-pygame.mixer.init()
-initdebugmessage = pygame.mixer.get_init()
-print(initdebugmessage)
-scrapealert = pygame.mixer.Sound(file=filename)
-pygame.mixer.Sound.play(scrapealert)
-print('ayy lmao hello earth')
+
 
 
