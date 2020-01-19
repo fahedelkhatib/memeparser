@@ -1,11 +1,11 @@
-import selenium
+#import selenium
 import praw
-from gtts import gTTS
+#from gtts import gTTS
 import time
 import os
 import pygame
 import wget
-import re
+#import re
 
 #uses pygame.mixer.music the wrong way but plays tts files one at a time
 def play(filename):
@@ -94,7 +94,7 @@ for submission in subreddit.new(limit=7):
 #regex = re.compile('.jpg')
 subredditname = input("Enter subreddit name: ")
 
-submissions = reddit.subreddit(subredditname).top(limit=10)
+submissions = reddit.subreddit(subredditname).top(limit=1000)
 try:
     os.mkdir(subredditname)
 except:
@@ -109,11 +109,10 @@ for submission in submissions:
     try:
         wget.download(submission.url)
     except:
-        
         print('NOTHING DOWNLOADED')
     time.sleep(1)
     print('---------------------------------------------')
     
 os.chdir('../')
 print(os.getcwd())
-subredditpullcompleted()
+#subredditpullcompleted()
