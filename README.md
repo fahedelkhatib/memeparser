@@ -1,1 +1,14 @@
-This is the first version of the readme, so i dont have an empty repo lol
+Welcome to memeparser! Below is a list of python modules you need to install before you can run main.py:
+
+* praw (sudo pip install praw)
+
+* time
+
+* os
+
+* pygame (sudo pip install pygame)
+
+* wget (sudo pip install wget)
+
+Of course, you will need to have python 3.x installed with pip, preferrably where both python and pip are in your $PATH.
+
