@@ -32,29 +32,39 @@ def playdebugmessage(debugmessagetitle):
     play(filename)
     print('debugmessage played\n')
 
+def initializeRedditInstance():
+    redditObject = praw.Reddit(client_id='LJ2JgRga7CP6Cw',
+             client_secret='WJ-I1ZbsCVz8F3Tz-XFyua7iqhE',
+             user_agent='windows:com.mrfalafel.memescraper:v1.0.0'
+             )
+    return redditObject
+
+####################################################################
+####################################################################
+
+
 os.system('cls')
 #os.system('ren bruh.wav bruhh.wav')
 os.system('echo hello world!')
 #os.system('python -m wget https://www.reddit.com/r/MicrowavedMemes/ -o FILE ')
 
-
-reddit = praw.Reddit(client_id='LJ2JgRga7CP6Cw',
-                     client_secret='WJ-I1ZbsCVz8F3Tz-XFyua7iqhE',
-                     user_agent='windows:com.mrfalafel.memescraper:v1.0.0'
-                     )
+reddit = initializeRedditInstance()
 
 subreddit = reddit.subreddit('nukedmemes')
 
-print(subreddit.display_name)
-print(subreddit.title)
-print(subreddit.description)
+print(reddit.domain('imgur.com').new())
+
+#print(subreddit.display_name)
+#print(subreddit.title)
+#print(subreddit.description)
 
 for submission in reddit.subreddit('nukedmemes').new(limit=20):
     print(submission.title)
     #print(reddit.read_only)
     time.sleep(0.5)
     print('---------------------------------------------')
-                     
+
+
 playdebugmessage('subredditpullcompleted.mp3')
 time.sleep(4)
 
