@@ -5,7 +5,7 @@ import time
 import os
 import pygame
 import wget
-
+import re
 
 #uses pygame.mixer.music the wrong way but plays tts files one at a time
 def play(filename):
@@ -44,7 +44,8 @@ def initializeRedditInstance():
     return redditObject
 
 def subredditpullcompleted():
-    playdebugmessage('subredditpullcompleted.mp3')
+    srpc = "C:\\Users\\pc\\Dropbox\\UltimaCode\\Python\\memeparser\\subredditpullcompleted.mp3"
+    playdebugmessage(srpc.encode('utf-8'))
     time.sleep(2)
 
 def getimg(self):
@@ -85,19 +86,31 @@ for submission in subreddit.new(limit=7):
     time.sleep(0.1)
     print('---------------------------------------------')
 
-subredditpullcompleted()
+#subredditpullcompleted()
 
-submissions = reddit.subreddit('nukedmemes').hot(limit=50)
+#regex = re.compile('.jpg')
+subredditname = input("Enter subreddit name: ")
 
-os.system('mkdir nukedmemes')
+submissions = reddit.subreddit(subredditname).top(limit=3000)
+try:
+    os.mkdir(subredditname)
+except:
+    print(subredditname + " DIRECTORY ALREADY EXISTS")
+
 print('WORKING DIRECTORY: ')
 #os.system('cd nukedmemes')
-os.chdir('nukedmemes')
+os.chdir(subredditname)
 os.system('pwd')
 for submission in submissions:
     print(submission.title.encode('utf-8'), submission.url.encode('utf-8'))
-    wget.download(submission.url)
+    try:
+        wget.download(submission.url)
+    except:
+        
+        print('NOTHING DOWNLOADED')
+    time.sleep(1)
     print('---------------------------------------------')
     
-os.chdir('..')
+os.chdir('../')
+os.system('pwd')
 subredditpullcompleted()
