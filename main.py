@@ -1,4 +1,5 @@
 import selenium
+import praw
 from gtts import gTTS
 import time
 import os
@@ -23,25 +24,38 @@ def stringifyfile(inputfilename):
     print("TEXT BEING READ TO STRING: \n" + input1)
     return input1
 
-def playdebugmessage():
-    filename = 'debugmessage.mp3'
+def playdebugmessage(debugmessagetitle):
+    filename = debugmessagetitle
     input1 = 'bruh'
-    tts = gTTS(text=input1,lang='es')
-    tts.save(filename)
-    os.system('mpg321 filename')
+    #tts = gTTS(text=input1,lang='es')
+    #tts.save(filename)
     play(filename)
-    #pygame.mixer.init()
-    #pygame.mixer.music.load(filename)
-    #pygame.mixer.music.play(0)
     print('debugmessage played\n')
 
 os.system('cls')
-os.system('ren bruh.wav bruhh.wav')
-os.system('echo \n')
+#os.system('ren bruh.wav bruhh.wav')
 os.system('echo hello world!')
 #os.system('python -m wget https://www.reddit.com/r/MicrowavedMemes/ -o FILE ')
-playdebugmessage()
 
 
+reddit = praw.Reddit(client_id='LJ2JgRga7CP6Cw',
+                     client_secret='WJ-I1ZbsCVz8F3Tz-XFyua7iqhE',
+                     user_agent='windows:com.mrfalafel.memescraper:v1.0.0'
+                     )
+
+subreddit = reddit.subreddit('nukedmemes')
+
+print(subreddit.display_name)
+print(subreddit.title)
+print(subreddit.description)
+
+for submission in reddit.subreddit('nukedmemes').new(limit=20):
+    print(submission.title)
+    #print(reddit.read_only)
+    time.sleep(0.5)
+    print('---------------------------------------------')
+                     
+playdebugmessage('subredditpullcompleted.mp3')
+time.sleep(4)
 
 
