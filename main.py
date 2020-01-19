@@ -29,7 +29,7 @@ def stringifyfile(inputfilename):
 #playsdebugmessage of choice
 def playdebugmessage(debugmessagetitle):
     filename = debugmessagetitle
-    input1 = 'bruh'
+    input1 = 'take 2 subreddit pull complete'
     #tts = gTTS(text=input1,lang='es')
     #tts.save(filename)
     play(filename)
@@ -44,8 +44,10 @@ def initializeRedditInstance():
     return redditObject
 
 def subredditpullcompleted():
-    srpc = "C:\\Users\\pc\\Dropbox\\UltimaCode\\Python\\memeparser\\subredditpullcompleted.mp3"
+    srpc = "subredditpullcompleted.mp3"
+    #playdebugmessage("subredditpullcompleted.mp3")
     playdebugmessage(srpc.encode('utf-8'))
+    #playdebugmessage(srpc)
     time.sleep(2)
 
 def getimg(self):
@@ -66,6 +68,7 @@ def getimg(self):
 
 
 os.system('cls')
+#os.system('mpg123 subredditpullcompleted.mp3')
 #os.system('ren bruh.wav bruhh.wav')
 os.system('echo hello, people of earth!')
 #os.system('python -m wget https://www.reddit.com/r/MicrowavedMemes/ -o FILE ')
@@ -91,7 +94,7 @@ for submission in subreddit.new(limit=7):
 #regex = re.compile('.jpg')
 subredditname = input("Enter subreddit name: ")
 
-submissions = reddit.subreddit(subredditname).top(limit=3000)
+submissions = reddit.subreddit(subredditname).top(limit=10)
 try:
     os.mkdir(subredditname)
 except:
@@ -100,7 +103,7 @@ except:
 print('WORKING DIRECTORY: ')
 #os.system('cd nukedmemes')
 os.chdir(subredditname)
-os.system('pwd')
+print(os.getcwd())
 for submission in submissions:
     print(submission.title.encode('utf-8'), submission.url.encode('utf-8'))
     try:
@@ -112,5 +115,5 @@ for submission in submissions:
     print('---------------------------------------------')
     
 os.chdir('../')
-os.system('pwd')
+print(os.getcwd())
 subredditpullcompleted()
