@@ -91,12 +91,13 @@ submissions = reddit.subreddit('nukedmemes').hot(limit=50)
 
 os.system('mkdir nukedmemes')
 print('WORKING DIRECTORY: ')
-os.system('cd nukedmemes')
+#os.system('cd nukedmemes')
+os.chdir('nukedmemes')
 os.system('pwd')
 for submission in submissions:
-    print(submission.title, submission.url)
+    print(submission.title.encode('utf-8'), submission.url.encode('utf-8'))
     wget.download(submission.url)
     print('---------------------------------------------')
     
-
+os.chdir('..')
 subredditpullcompleted()
