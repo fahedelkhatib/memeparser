@@ -39,7 +39,7 @@ os.system('cls')
 os.system('ren bruh.wav bruhh.wav')
 os.system('echo \n')
 os.system('echo hello world!')
-os.system('wget -nd -r -l 1 -A jpg https://www.reddit.com/r/MicrowavedMemes/')
+#os.system('python -m wget https://www.reddit.com/r/MicrowavedMemes/ -o FILE ')
 playdebugmessage()
 
 
