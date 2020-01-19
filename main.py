@@ -28,12 +28,18 @@ def playdebugmessage():
     input1 = 'bruh'
     tts = gTTS(text=input1,lang='es')
     tts.save(filename)
-    pygame.mixer.init()
-    pygame.mixer.music.load(filename)
-    pygame.mixer.music.play(0)
-    print('debugmessage')
+    os.system('mpg321 filename')
+    play(filename)
+    #pygame.mixer.init()
+    #pygame.mixer.music.load(filename)
+    #pygame.mixer.music.play(0)
+    print('debugmessage played\n')
 
-os.system('echo "hello world!"')
+os.system('cls')
+os.system('ren bruh.wav bruhh.wav')
+os.system('echo \n')
+os.system('echo hello world!')
+os.system('wget -nd -r -l 1 -A jpg https://www.reddit.com/r/MicrowavedMemes/')
 playdebugmessage()
 
 
