@@ -4,6 +4,8 @@ from gtts import gTTS
 import time
 import os
 import pygame
+import wget
+
 
 #uses pygame.mixer.music the wrong way but plays tts files one at a time
 def play(filename):
@@ -24,6 +26,7 @@ def stringifyfile(inputfilename):
     print("TEXT BEING READ TO STRING: \n" + input1)
     return input1
 
+#playsdebugmessage of choice
 def playdebugmessage(debugmessagetitle):
     filename = debugmessagetitle
     input1 = 'bruh'
@@ -32,6 +35,7 @@ def playdebugmessage(debugmessagetitle):
     play(filename)
     print('debugmessage played\n')
 
+#initializes, returns reddit instance using PRAW
 def initializeRedditInstance():
     redditObject = praw.Reddit(client_id='LJ2JgRga7CP6Cw',
              client_secret='WJ-I1ZbsCVz8F3Tz-XFyua7iqhE',
@@ -39,33 +43,60 @@ def initializeRedditInstance():
              )
     return redditObject
 
+def subredditpullcompleted():
+    playdebugmessage('subredditpullcompleted.mp3')
+    time.sleep(2)
+
+def getimg(self):
+    self.all = self.reddit.subreddit('all').new(limit=10)
+
+    for post in self.all:
+        if str(post.url).endswith('.jpg'):
+            try:
+                response = urllib.request.urlopen(post.url)
+            except:
+                break
+            self.img = response.read()
+            with open(str(post.id)+'.jpg','wb') as f:
+                f.write(self.img)
+
 ####################################################################
 ####################################################################
 
 
 os.system('cls')
 #os.system('ren bruh.wav bruhh.wav')
-os.system('echo hello world!')
+os.system('echo hello, people of earth!')
 #os.system('python -m wget https://www.reddit.com/r/MicrowavedMemes/ -o FILE ')
 
 reddit = initializeRedditInstance()
 
-subreddit = reddit.subreddit('nukedmemes')
+subreddit = reddit.subreddit('redditdev')
 
 print(reddit.domain('imgur.com').new())
 
-#print(subreddit.display_name)
-#print(subreddit.title)
+print(subreddit.display_name)
+print(subreddit.title)
 #print(subreddit.description)
 
-for submission in reddit.subreddit('nukedmemes').new(limit=20):
-    print(submission.title)
+for submission in subreddit.new(limit=7):
+    print(submission.title)    
     #print(reddit.read_only)
-    time.sleep(0.5)
+    time.sleep(0.1)
     print('---------------------------------------------')
 
+subredditpullcompleted()
 
-playdebugmessage('subredditpullcompleted.mp3')
-time.sleep(4)
+submissions = reddit.subreddit('nukedmemes').hot(limit=50)
 
+os.system('mkdir nukedmemes')
+print('WORKING DIRECTORY: ')
+os.system('cd nukedmemes')
+os.system('pwd')
+for submission in submissions:
+    print(submission.title, submission.url)
+    wget.download(submission.url)
+    print('---------------------------------------------')
+    
 
+subredditpullcompleted()
