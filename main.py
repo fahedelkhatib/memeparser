@@ -48,7 +48,7 @@ def subredditpullcompleted():
     #playdebugmessage("subredditpullcompleted.mp3")
     playdebugmessage(srpc.encode('utf-8'))
     #playdebugmessage(srpc)
-    time.sleep(2)
+    time.sleep(4)
 
 def getimg(self):
     self.all = self.reddit.subreddit('all').new(limit=10)
@@ -89,16 +89,17 @@ for submission in subreddit.new(limit=7):
     time.sleep(0.1)
     print('---------------------------------------------')
 
-#subredditpullcompleted()
+subredditpullcompleted()
 
 #regex = re.compile('.jpg')
+querylimit= int(input('how many entries should i query?\n'))
 subredditname = input("Enter subreddit name: ")
 
-submissions = reddit.subreddit(subredditname).top(limit=1000)
+submissions = reddit.subreddit(subredditname).top(limit=querylimit)
 try:
     os.mkdir(subredditname)
 except:
-    print(subredditname + " DIRECTORY ALREADY EXISTS")
+    print("-------" + subredditname + " DIRECTORY ALREADY EXISTS-------")
 
 print('WORKING DIRECTORY: ')
 #os.system('cd nukedmemes')
@@ -111,8 +112,13 @@ for submission in submissions:
     except:
         print('NOTHING DOWNLOADED')
     time.sleep(1)
-    print('---------------------------------------------')
-    
-os.chdir('../')
+    print('\nquery concluded')
+    print('\n---------------------------------------------')
+
+print('PREVIOUS DIRECTORY: ')
 print(os.getcwd())
-#subredditpullcompleted()
+os.chdir('../')
+print('WORKING DIRECTORY: ')
+print(os.getcwd())
+subredditpullcompleted()
+
