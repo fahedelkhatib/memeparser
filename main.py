@@ -43,6 +43,7 @@ def initializeRedditInstance():
              )
     return redditObject
 
+#my favorite feature owo)/
 def subredditpullcompleted():
     srpc = "subredditpullcompleted.mp3"
     #playdebugmessage("subredditpullcompleted.mp3")
@@ -50,6 +51,7 @@ def subredditpullcompleted():
     #playdebugmessage(srpc)
     time.sleep(4)
 
+#this one straight up is just here so i can reference a piece of useful code
 def getimg(self):
     self.all = self.reddit.subreddit('all').new(limit=10)
 
@@ -105,12 +107,19 @@ print('WORKING DIRECTORY: ')
 #os.system('cd nukedmemes')
 os.chdir(subredditname)
 print(os.getcwd())
+
+imagescounted = 0
+imagesqueried = 0
+
 for submission in submissions:
     print(submission.title.encode('utf-8'), submission.url.encode('utf-8'))
     try:
         wget.download(submission.url)
+        imagescounted = imagescounted + 1
+        imagesqueried = imagesqueried + 1
     except:
         print('NOTHING DOWNLOADED')
+        imagescounted = imagescounted - 1
     time.sleep(1)
     print('\nquery concluded')
     print('\n---------------------------------------------')
@@ -120,5 +129,7 @@ print(os.getcwd())
 os.chdir('../')
 print('WORKING DIRECTORY: ')
 print(os.getcwd())
+print('IMAGES QUERIED: ' + str(imagesqueried))
+print('IMAGES DOWNLOADED: ' + str(imagescounted))
 subredditpullcompleted()
 
