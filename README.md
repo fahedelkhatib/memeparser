@@ -14,6 +14,10 @@ Of course, you will need to have python 3.x installed with pip, preferrably wher
 
 FEATURES I WANT IN THIS SOFTWARE MOVING FORWARD:
 
+* [ ] renaming of downloaded files to date_time_subreddit_posttitle format
+
+* [ ] ability to choose between querying 'all', 'top', and 'hot' for a reddit scrape
+
 * [x] ability to choose download directory 
 
 * [ ] automatic proxying
