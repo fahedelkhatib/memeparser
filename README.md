@@ -18,4 +18,6 @@ FEATURES I WANT IN THIS SOFTWARE MOVING FORWARD:
 
 * automatic proxying
 
-*downloading from sites other than reddit*
+* *downloading from sites other than reddit*
+
+* *analytics collected, sent to remote database to be aggregated and displayed on a public/private website (tbd)*
