@@ -65,6 +65,18 @@ def getimg(self):
             with open(str(post.id)+'.jpg','wb') as f:
                 f.write(self.img)
 
+def displayAnalytics(imagesqueried, imagescounted):
+    print('\n\n\t\t---------DISPLAYING ANALYTICS---------\n\n')
+    print('PREVIOUS DIRECTORY: ')
+    print(os.getcwd())
+    #'C:\\Users\\pc\\Documents\\memeparser'
+    os.chdir(homedirectory)
+    print('WORKING DIRECTORY: ')
+    print(os.getcwd())
+    print('IMAGES QUERIED: ' + str(imagesqueried))
+    print('IMAGES DOWNLOADED: ' + str(imagescounted))
+    print('\n\n\t\t-----------END OF ANALYTICS-----------\n\n')
+
 ####################################################################
 ####################################################################
 
@@ -74,6 +86,8 @@ os.system('cls')
 #os.system('ren bruh.wav bruhh.wav')
 os.system('echo hello, people of earth!')
 #os.system('python -m wget https://www.reddit.com/r/MicrowavedMemes/ -o FILE ')
+homedirectory = str(os.getcwd())
+
 
 reddit = initializeRedditInstance()
 
@@ -102,7 +116,7 @@ querylimit= int(input('how many entries should i query?\n'))
 subredditname = input("Enter subreddit name: ")
 bVerifySubreddit = input("Are you sure? (answer True or False)\n")
 
-while(bVerifySubreddit != "True"):
+while((bVerifySubreddit != "True") & (bVerifySubreddit != "true") & (bVerifySubreddit != "T") & (bVerifySubreddit != "t")):
     subredditname = input("Enter subreddit name again: ")
     bVerifySubreddit = input("Are you sure? (answer True or False)\n")
 
@@ -137,12 +151,6 @@ for submission in submissions:
     print('\nquery concluded')
     print('\n---------------------------------------------')
 
-print('PREVIOUS DIRECTORY: ')
-print(os.getcwd())
-os.chdir('../')
-print('WORKING DIRECTORY: ')
-print(os.getcwd())
-print('IMAGES QUERIED: ' + str(imagesqueried))
-print('IMAGES DOWNLOADED: ' + str(imagescounted))
-subredditpullcompleted()
 
+displayAnalytics(imagesqueried, imagescounted)
+subredditpullcompleted()
