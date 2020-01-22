@@ -14,10 +14,10 @@ Of course, you will need to have python 3.x installed with pip, preferrably wher
 
 FEATURES I WANT IN THIS SOFTWARE MOVING FORWARD:
 
-* ability to choose download directory
+* [x] ability to choose download directory 
 
-* automatic proxying
+* [ ] automatic proxying
 
-* *downloading from sites other than reddit*
+* [ ] *downloading from sites other than reddit*
 
-* *analytics collected, sent to remote database to be aggregated and displayed on a public/private website (tbd)*
+* [ ] *analytics collected, sent to remote database to be aggregated and displayed on a public/private website (tbd)*
