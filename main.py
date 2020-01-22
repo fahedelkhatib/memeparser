@@ -93,19 +93,32 @@ for submission in subreddit.new(limit=7):
 
 subredditpullcompleted()
 
+#######################################################################
+#######################################################################
+
+
 #regex = re.compile('.jpg')
 querylimit= int(input('how many entries should i query?\n'))
 subredditname = input("Enter subreddit name: ")
+bVerifySubreddit = input("Are you sure? (answer True or False)\n")
+
+while(bVerifySubreddit != "True"):
+    subredditname = input("Enter subreddit name again: ")
+    bVerifySubreddit = input("Are you sure? (answer True or False)\n")
+
+downloadpath = input("Where would you like to download these memes? \n")#.encode('utf-8')
+print("the path you have chosen is: " + str(downloadpath))
+
 
 submissions = reddit.subreddit(subredditname).top(limit=querylimit)
 try:
-    os.mkdir(subredditname)
+    os.mkdir(downloadpath)
 except:
-    print("-------" + subredditname + " DIRECTORY ALREADY EXISTS-------")
+    print("-------" + downloadpath + " DIRECTORY ALREADY EXISTS-------")
 
 print('WORKING DIRECTORY: ')
 #os.system('cd nukedmemes')
-os.chdir(subredditname)
+os.chdir(downloadpath)
 print(os.getcwd())
 
 imagescounted = 0
