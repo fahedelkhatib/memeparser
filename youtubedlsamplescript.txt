@@ -1,0 +1,9 @@
+#!/bin/bash
+
+for FILEPATH in /mnt/scripts/YouTube/channels/*; do
+
+FILENAME="$(basename -- $FILEPATH)"
+
+youtube-dl -i -a $FILEPATH --download-archive "/mnt/scripts/YouTube/archive.lst" --write-description --write-thumbnail --write-sub --all-subs --convert-subs srt --add-metadata --write-all-thumbnails --embed-subs --embed-thumbnail -o "/mnt/incoming/downloads/youtube/$FILENAME/%(uploader)s/%(uploader)s %(upload_date)s %(id)s - %(title)s"
+
+done
