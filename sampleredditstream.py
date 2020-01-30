@@ -1,5 +1,6 @@
 import praw
 import time
+from time import gmtime, strftime
 import os
 import wget
 from zipfile import ZipFile #play with this after figuring out how to name files
@@ -17,9 +18,15 @@ def getTitleasTimestamp():
     #now = datetime.now().time()
 
     t = time.localtime()
-    current_time = time.strftime("%H:%M:%S", t)
+    current_time = strftime("%a,%d%b%Y_%H_%M_%S", t)
+    #strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime())
+    #time.strftime("%H:%M:%S", t)
     print('\t\t' + current_time)
-    current_time = changeWord(current_time)
+
+    
+
+    print('\t\tCURRENT_TIME: ' + current_time)
+    #current_time = 't_' + changeWord(current_time)
     return current_time
 
     #print("\t\tnow =", now)
@@ -33,6 +40,24 @@ def changeWord(word):
             word = word.replace(letter,"_")
     print('\tNEW WORD: ' + word)
     return word
+
+def returnOldFileExtension(filename):
+
+    if(str(filename).endswith('.jpg')):
+       return '.jpg'
+    if(str(filename).endswith('.png')):
+       return '.png'
+    if(str(filename).endswith('.gif')):
+       return '.gif'
+
+def vetFileExtension(filename):
+    
+    if(str(filename).endswith(".wget") |
+       str(filename).endswith(".download") |
+       str(filename).endswith(".html")):
+            os.remove(filename)
+            print("\nFILE REMOVED")
+
 
 #passes in submission object from reddit.stream.submissions()
 #meant to be called in for loop iterating through reddit.stream.submissions()
@@ -72,6 +97,7 @@ print("The path you have chosen is: " + str(downloadpath))
 #submissions = reddit.subreddit(subredditname).top(limit=querylimit)
 try:
     os.mkdir(downloadpath)
+    print('NEW DIRECTORY CREATED')
 except:
     print("-------" + downloadpath + " DIRECTORY ALREADY EXISTS-------")
 
@@ -119,16 +145,17 @@ for submission in subreddit.stream.submissions(skip_existing=True):
         
         print('3: --scanningforbadfiletypes--')
 
-        if(str(filename).endswith(".wget")):
-            os.remove(filename)
-            print("\nFILE REMOVED")
-            
+        vetFileExtension(filename)
+
+        print('function call: retaining old file extension')
+        oldFileExtension = returnOldFileExtension(filename)
+        
         print('4: --humaninputbuffer--')
         
         #humaninputbuffer = input('renaming file')
         
         print('5: renaming file')
-        
+        now = now + oldFileExtension
         os.rename(filename, str(now))
         filename = str(now)
         print('NEW FILENAME: ' + filename)
@@ -143,7 +170,7 @@ for submission in subreddit.stream.submissions(skip_existing=True):
 
     
     print('\n******************************************************')
-    if(loops >= 10):
+    if(loops >= 100):
         break;
     #print(str(submission.description.encode('utf-8')))
     #print(str(comment))
