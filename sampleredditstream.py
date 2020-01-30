@@ -50,14 +50,32 @@ def returnOldFileExtension(filename):
     if(str(filename).endswith('.gif')):
        return '.gif'
 
+    print('\nfile is not gif, png, or jpg')
+    return 'file'
+
 def vetFileExtension(filename):
     
     if(str(filename).endswith(".wget") |
        str(filename).endswith(".download") |
-       str(filename).endswith(".html")):
+       str(filename).endswith(".html") |
+       str(filename).endswith(".tmp") |
+       (returnOldFileExtension(filename) == 'file') |
+       str(filename).endswith(".php") |
+       str(filename).endswith(".WGET")):
             os.remove(filename)
             print("\nFILE REMOVED")
 
+def displayAnalytics(imagesqueried, imagescounted):
+    print('\n\n\t\t---------DISPLAYING ANALYTICS---------\n\n')
+    print('PREVIOUS DIRECTORY: ')
+    print(os.getcwd())
+    #'C:\\Users\\pc\\Documents\\memeparser'
+    os.chdir(homedirectory)
+    print('WORKING DIRECTORY: ')
+    print(os.getcwd())
+    print('IMAGES QUERIED: ' + str(imagesqueried))
+    print('IMAGES DOWNLOADED: ' + str(imagescounted))
+    print('\n\n\t\t-----------END OF ANALYTICS-----------\n\n')
 
 #passes in submission object from reddit.stream.submissions()
 #meant to be called in for loop iterating through reddit.stream.submissions()
@@ -86,7 +104,10 @@ subredditname = input('so then... tell me which subreddit you want to monitor ha
 #subredditname = input("Enter subreddit name: ")
 bVerifySubreddit = input("Are you sure? I don't judge! (answer True or False)\n")
 
-while((bVerifySubreddit != "True") & (bVerifySubreddit != "true") & (bVerifySubreddit != "T") & (bVerifySubreddit != "t")):
+while((bVerifySubreddit != "True") &
+      (bVerifySubreddit != "true") &
+      (bVerifySubreddit != "T") &
+      (bVerifySubreddit != "t")):
     subredditname = input("Enter subreddit name again: ")
     bVerifySubreddit = input("Are you sure? (answer True or False)\n")
 
@@ -135,13 +156,17 @@ for submission in subreddit.stream.submissions(skip_existing=True):
     try:
         print('1: --trying--')
 
-        filename = wget.download(submission.url)    #saves filename while simultaneously attempting download
-        print('\nFILENAME: ' + str(filename))         #prints filename for logging purposes
+        filename = wget.download(submission.url)
+        imagesqueried = imagesqueried + 1
+        #saves filename while simultaneously attempting download
+        print('\nFILENAME: ' + str(filename))
+        #prints filename for logging purposes
 
         
         print('2: --gettingTimestamp--')
 
-        now = getTitleasTimestamp()                 #gets timestamp and saves it to 'now' variable
+        now = getTitleasTimestamp()
+        #gets timestamp and saves it to 'now' variable
         
         print('3: --scanningforbadfiletypes--')
 
@@ -161,11 +186,11 @@ for submission in subreddit.stream.submissions(skip_existing=True):
         print('NEW FILENAME: ' + filename)
         
         print('6: completed try')
-        
-        
+        imagescounted = imagescounted + 1
+            
     except:
         print('-1')
-        print('\nNOTHING DOWNLOADED')
+        print('\n--------FAIL MESSAGE---------')
         #imagescounted = imagescounted - 1
 
     
@@ -176,4 +201,9 @@ for submission in subreddit.stream.submissions(skip_existing=True):
     #print(str(comment))
     time.sleep(0.75)
 
+
+
 print('number of times looped: ' + str(loops))
+
+
+displayAnalytics(imagesqueried, imagescounted)
