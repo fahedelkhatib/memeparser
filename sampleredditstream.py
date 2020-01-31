@@ -3,10 +3,10 @@ import time
 from time import gmtime, strftime
 import os
 import wget
-from zipfile import ZipFile #play with this after figuring out how to name files
+#from zipfile import ZipFile #play with this after figuring out how to name files
 #from datetime import datetime
 import pygame
-import ffmpeg
+#import ffmpeg
 
 def initializeRedditInstance():
     redditObject = praw.Reddit(client_id='LJ2JgRga7CP6Cw',
@@ -72,6 +72,7 @@ def vetFileExtension(filename):
             print("\nFILE REMOVED")
 def displayAnalytics(imagesqueried, imagescounted):
     print('\n\n\t\t---------DISPLAYING ANALYTICS---------\n\n')
+    print('PROCESS ID: ' + str(os.getpid()))
     print('PREVIOUS DIRECTORY: ')
     print(downloadpath)
     #print(os.getcwd())
@@ -95,13 +96,18 @@ def printPostInformation(submission, debugLogFileName):
     
     print('Post URL: ' + str(submission.url.encode('utf-8')))
     outputString = outputString + '\nPost URL: ' + str(submission.url.encode('utf-8'))
+
     #the .author below instantiates a "redditor" instance... just fyi :)
-    #print('Post Author: ' + str(submission.author.name.encode('utf-8')))
-    #print(getTitleasTimestamp())
     print('Post Author: ' + str(submission.author.name.encode('utf-8')))
     outputString = outputString + '\nPost Author: ' + str(submission.author.name.encode('utf-8'))
     
-    
+    print('Number of Comments: ' + str(submission.num_comments))
+    outputString = outputString + '\nPost Author: ' + str(submission.num_comments)
+
+    print('Subreddit Name: ' + str(submission.subreddit.display_name.encode('utf-8')))
+    outputString = outputString + '\nPost Author: ' + str(submission.author.name.encode('utf-8'))
+
+        
     print(outputString, file = outputLogFile)
 #my favorite feature owo)/
 def subredditpullcompleted():
@@ -135,7 +141,7 @@ imagescounted = 0
 imagesqueried = 0
 reddit = initializeRedditInstance()
 homedirectory = os.getcwd()
-debugLogFileName = 'C:\\users\\pc\\documents\\memeparser\\debuglog.txt'
+debugLogFileName = 'C:\\users\\felicity\\documents\\memeparser\\debuglog.txt'
 
 
 os.system('cls')
@@ -151,12 +157,15 @@ bVerifySubreddit = 't'
 while((bVerifySubreddit != "True") &
       (bVerifySubreddit != "true") &
       (bVerifySubreddit != "T") &
-      (bVerifySubreddit != "t")):
+      (bVerifySubreddit != "t") &
+      (bVerifySubreddit != "y") &
+      (bVerifySubreddit != "Yes") &
+      (bVerifySubreddit != "yes")):
     subredditname = input("Enter subreddit name again: ")
     bVerifySubreddit = input("Are you sure? (answer True or False)\n")
 
 downloadpath = input("Where would you like to download these memes? \n")#.encode('utf-8')
-downloadpath = 'C:\\users\\pc\\documents\\niggabuffer'
+downloadpath = 'C:\\users\\felicity\\documents\\niggabuffer'
 print("The path you have chosen is: " + str(downloadpath))
 
 
@@ -199,7 +208,10 @@ for submission in subreddit.stream.submissions(skip_existing=True):
             print('1: --trying--')
 
         filename = wget.download(submission.url)
-        imagesqueried = imagesqueried + 1
+        if(filename != 'download.wget'):
+            imagesqueried = imagesqueried + 1
+        else:
+            print('\t\t\tUH OH! YOU FUCKING BUFFOON! YOU MORON!')
         #saves filename while simultaneously attempting download
         print('\nFILENAME: ' + str(filename))
         #prints filename for logging purposes
