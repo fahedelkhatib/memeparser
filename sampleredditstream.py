@@ -1,3 +1,5 @@
+bpygame = True;
+
 import praw
 import time
 from time import gmtime, strftime
@@ -5,7 +7,8 @@ import os
 import wget
 #from zipfile import ZipFile #play with this after figuring out how to name files
 #from datetime import datetime
-import pygame
+if(bpygame == True):
+    import pygame
 #import ffmpeg
 
 def initializeRedditInstance():
@@ -34,11 +37,42 @@ def getTitleasTimestamp():
     
     return current_time
 def changeWord(word):
-    print('\treplacing : with _ in timestamp')
+    print('\treplacing : with - in timestamp')
     for letter in word:
         if letter == ":":
-            word = word.replace(letter,"_")
+            word = word.replace(letter,"-")
     print('\tNEW WORD: ' + word)
+    
+    print('\treplacing various characters with _ in timestamp')
+    for letter in word:
+        #this could have been one giant if statement, but i added them all separately for readability
+        #bazinga
+        if letter == " ":
+            word = word.replace(letter,"_")
+            
+        if letter == "\\":
+            word = word.replace(letter,"_")
+            
+        if letter == "/":
+            word = word.replace(letter,"_")
+        
+        if letter == "*":
+            word = word.replace(letter,"_")
+            
+        if letter == "?":
+            word = word.replace(letter,"_")
+        
+        if letter == "<":
+            word = word.replace(letter,"_")
+            
+        if letter == ">":
+            word = word.replace(letter,"_")
+            
+        if letter == "|":
+            word = word.replace(letter,"_")
+            
+    print('\tNEW WORD: ' + word)
+    
     return word
 def returnOldFileExtension(filename):
 
@@ -87,6 +121,7 @@ def displayAnalytics(imagesqueried, imagescounted):
 #meant to be called in for loop iterating through reddit.stream.submissions()
 def printPostInformation(submission, debugLogFileName):
     
+    #os.system('touch ' + debugLogFileName)
     outputString = ''
     outputLogFile = open(debugLogFileName, 'w')
     
@@ -105,7 +140,7 @@ def printPostInformation(submission, debugLogFileName):
     outputString = outputString + '\nPost Author: ' + str(submission.num_comments)
 
     print('Subreddit Name: ' + str(submission.subreddit.display_name.encode('utf-8')))
-    outputString = outputString + '\nPost Author: ' + str(submission.author.name.encode('utf-8'))
+    outputString = outputString + '\nSubreddit Name: ' + str(submission.subreddit.display_name.encode('utf-8'))
 
         
     print(outputString, file = outputLogFile)
@@ -136,18 +171,18 @@ def play(filename):
 ##################################################################################
 ##################################################################################
 
-showDebugMessages = False 
+showDebugMessages = True
 imagescounted = 0
 imagesqueried = 0
 reddit = initializeRedditInstance()
 homedirectory = os.getcwd()
-debugLogFileName = 'C:\\users\\felicity\\documents\\memeparser\\debuglog.txt'
+debugLogFileName = 'C:\\users\\pc\\documents\\memeparser\\debuglog.txt'
 
 
 os.system('cls')
 print('okay, so you got this far')
 subredditname = input('so then... tell me which subreddit you want to monitor habibi :)\n')
-subredditname = 'all'
+subredditname = 'nukedmemes'
 
 #querylimit= int(input('how many entries should i query?\n'))
 #subredditname = input("Enter subreddit name: ")
@@ -165,7 +200,7 @@ while((bVerifySubreddit != "True") &
     bVerifySubreddit = input("Are you sure? (answer True or False)\n")
 
 downloadpath = input("Where would you like to download these memes? \n")#.encode('utf-8')
-downloadpath = 'C:\\users\\felicity\\documents\\niggabuffer'
+downloadpath = 'C:\\users\\pc\\documents\\buffer'
 print("The path you have chosen is: " + str(downloadpath))
 
 
@@ -198,8 +233,16 @@ subreddit = reddit.subreddit(subredditname)
 print('PRINTING POST STREAM FROM SUBREDDIT: r/' + subreddit.display_name + '\n\n')
 #print(subreddit.display_name)
 
-for submission in subreddit.stream.submissions(skip_existing=True):
+subredditstream = reddit.subreddit("memes+dankmemes+natureismetal+nukedmemes+deepfriedmemes+idiotsincars+worldnews+wellthatsucks+bingbongtheorem").stream.submissions()
 
+#finalstream = subreddit.stream.submissions() + subredditstream
+
+
+
+for submission in subredditstream:
+#for submission in subreddit.stream.submissions(skip_existing=False):
+    print("Loop Number: " + str(loops))
+    print("Number downloaded: " + str(imagescounted))
     loops = loops + 1
     printPostInformation(submission, debugLogFileName)
     
@@ -208,10 +251,13 @@ for submission in subreddit.stream.submissions(skip_existing=True):
             print('1: --trying--')
 
         filename = wget.download(submission.url)
-        if(filename != 'download.wget'):
-            imagesqueried = imagesqueried + 1
-        else:
+        print('\n\t\ttask failed successfuly')
+        
+        if(filename.endswith('.wget')):
             print('\t\t\tUH OH! YOU FUCKING BUFFOON! YOU MORON!')
+        else:
+            imagesqueried = imagesqueried + 1
+            
         #saves filename while simultaneously attempting download
         print('\nFILENAME: ' + str(filename))
         #prints filename for logging purposes
@@ -238,7 +284,9 @@ for submission in subreddit.stream.submissions(skip_existing=True):
         
         if(showDebugMessages):
             print('5: renaming file')
-        now = now + oldFileExtension
+        subredditname = changeWord(submission.subreddit.display_name)
+        title = changeWord(submission.title)
+        now = now + "__" + title + "__" + subredditname + "__" + oldFileExtension 
         os.rename(filename, str(now))
         filename = str(now)
         print('NEW FILENAME: ' + filename)
@@ -254,11 +302,11 @@ for submission in subreddit.stream.submissions(skip_existing=True):
         #imagescounted = imagescounted - 1
 
     print('\n******************************************************')
-    if(loops >= 100):
+    if(loops >= 10000):
         break;
     #print(str(submission.description.encode('utf-8')))
     #print(str(comment))
-    time.sleep(0.75)
+    time.sleep(1)
 
 print('number of times looped: ' + str(loops))
 os.chdir(homedirectory)
