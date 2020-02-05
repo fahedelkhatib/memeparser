@@ -6,7 +6,7 @@ from time import gmtime, strftime
 import os
 import wget
 #from zipfile import ZipFile #play with this after figuring out how to name files
-#from datetime import datetime
+from datetime import datetime
 if(bpygame == True):
     import pygame
 #import ffmpeg
@@ -17,63 +17,54 @@ def initializeRedditInstance():
              user_agent='windows:com.mrfalafel.memescraper:v1.0.0'
              )
     return redditObject
-def getTitleasTimestamp():
-    print('\t\tgetting time for use in timestamp')
-    #now = datetime.now().time()
 
-    t = time.localtime()
-    current_time = strftime("%a,%d%b%Y_%H_%M_%S", t)
-    #strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime())
-    #time.strftime("%H:%M:%S", t)
-    print('\t\t' + current_time)
+def getTitleasTimestamp(submission, showDebugMessages):
+    if(showDebugMessages == True):
+        print('\t\tgetting timestamp from API')
+    t = submission.created_utc
+    if(showDebugMessages == True):
+        print("\t\tt = " + str(t))
+    timestamp = datetime.utcfromtimestamp(t).strftime('%a,%d%b%Y_%H_%M_%S')
+    if(showDebugMessages == True):
+        print('\t\tTIMESTAMP: ' + timestamp)
+    return timestamp
 
-    
-
-    print('\t\tCURRENT_TIME: ' + current_time)
-    #current_time = 't_' + changeWord(current_time)
-    #print("\t\tnow =", now)
-    #print("\t\ttype(now) =", type(now))
-    #return now
-    
-    return current_time
-def changeWord(word):
-    print('\treplacing : with - in timestamp')
+def changeWord(word, showDebugMessages):
+    if(showDebugMessages == True):
+        print('\treplacing : with - in word')
     for letter in word:
         if letter == ":":
             word = word.replace(letter,"-")
-    print('\tNEW WORD: ' + word)
+    if(showDebugMessages == True):
+        print('\tNEW WORD: ' + word)
     
-    print('\treplacing various characters with _ in timestamp')
+    if(showDebugMessages == True):
+        print('\treplacing various characters with _ in word: ' + word)
     for letter in word:
         #this could have been one giant if statement, but i added them all separately for readability
         #bazinga
         if letter == " ":
             word = word.replace(letter,"_")
-            
         if letter == "\\":
             word = word.replace(letter,"_")
-            
         if letter == "/":
             word = word.replace(letter,"_")
-        
         if letter == "*":
             word = word.replace(letter,"_")
-            
         if letter == "?":
             word = word.replace(letter,"_")
-        
         if letter == "<":
             word = word.replace(letter,"_")
-            
         if letter == ">":
             word = word.replace(letter,"_")
-            
         if letter == "|":
             word = word.replace(letter,"_")
-            
-    print('\tNEW WORD: ' + word)
+        if letter == ".":
+            word = word.replace(letter,"_")
+    if(showDebugMessages == True):
+        print('\tNEW WORD: ' + word)
+    return str(word)
     
-    return word
 def returnOldFileExtension(filename):
 
     if(str(filename).endswith('.jpg')):
@@ -93,8 +84,8 @@ def returnOldFileExtension(filename):
 
     print('\nfile is not among accepted filetypes')
     return 'file'
+
 def vetFileExtension(filename):
-    
     if(str(filename).endswith(".wget") |
        str(filename).endswith(".download") |
        str(filename).endswith(".html") |
@@ -104,6 +95,7 @@ def vetFileExtension(filename):
        str(filename).endswith(".WGET")):
             os.remove(filename)
             print("\nFILE REMOVED")
+
 def displayAnalytics(imagesqueried, imagescounted):
     print('\n\n\t\t---------DISPLAYING ANALYTICS---------\n\n')
     print('PROCESS ID: ' + str(os.getpid()))
@@ -120,30 +112,22 @@ def displayAnalytics(imagesqueried, imagescounted):
 #passes in submission object from reddit.stream.submissions()
 #meant to be called in for loop iterating through reddit.stream.submissions()
 def printPostInformation(submission, debugLogFileName):
-    
-    #os.system('touch ' + debugLogFileName)
+    print('Post title: ' + str(submission.title.encode('utf-8')))
+    print('Post URL: ' + str(submission.url.encode('utf-8')))
+    print('Post Author: ' + str(submission.author.name.encode('utf-8')))
+    print('Number of Comments: ' + str(submission.num_comments))
+    print('Subreddit Name: ' + str(submission.subreddit.display_name.encode('utf-8')))
+
+def savePostInformation(submission, debugLogFileName):
     outputString = ''
     outputLogFile = open(debugLogFileName, 'w')
-    
-    print('Post title: ' + str(submission.title.encode('utf-8')))
     outputString = outputString + '\nPost title: ' + str(submission.title.encode('utf-8'))
-    #print('Post title: ' + str(submission.title.encode('utf-8')), file = outputLogFile)
-    
-    print('Post URL: ' + str(submission.url.encode('utf-8')))
     outputString = outputString + '\nPost URL: ' + str(submission.url.encode('utf-8'))
-
-    #the .author below instantiates a "redditor" instance... just fyi :)
-    print('Post Author: ' + str(submission.author.name.encode('utf-8')))
     outputString = outputString + '\nPost Author: ' + str(submission.author.name.encode('utf-8'))
-    
-    print('Number of Comments: ' + str(submission.num_comments))
-    outputString = outputString + '\nPost Author: ' + str(submission.num_comments)
-
-    print('Subreddit Name: ' + str(submission.subreddit.display_name.encode('utf-8')))
+    outputString = outputString + '\nNumber of Comments: ' + str(submission.num_comments)
     outputString = outputString + '\nSubreddit Name: ' + str(submission.subreddit.display_name.encode('utf-8'))
-
-        
     print(outputString, file = outputLogFile)
+
 #my favorite feature owo)/
 def subredditpullcompleted():
     srpc = "subredditpullcompleted.mp3"
@@ -152,6 +136,7 @@ def subredditpullcompleted():
     #playdebugmessage(srpc.encode('utf-8'))
     #playdebugmessage(srpc)
     time.sleep(4)
+
 def playdebugmessage(debugmessagetitle):
     filename = debugmessagetitle
     input1 = 'take 2 subreddit pull complete'
@@ -159,6 +144,7 @@ def playdebugmessage(debugmessagetitle):
     #tts.save(filename)
     play(filename)
     print('debugmessage played\n')
+
 def play(filename):
     pygame.mixer.init()
     pygame.mixer.music.load(filename)
@@ -171,7 +157,7 @@ def play(filename):
 ##################################################################################
 ##################################################################################
 
-showDebugMessages = True
+showDebugMessages = False
 imagescounted = 0
 imagesqueried = 0
 reddit = initializeRedditInstance()
@@ -265,7 +251,7 @@ for submission in subredditstream:
         if(showDebugMessages):
             print('2: --gettingTimestamp--')
 
-        now = getTitleasTimestamp()
+        now = getTitleasTimestamp(submission, showDebugMessages)
         #gets timestamp and saves it to 'now' variable
         
         if(showDebugMessages):
@@ -284,11 +270,24 @@ for submission in subredditstream:
         
         if(showDebugMessages):
             print('5: renaming file')
-        subredditname = changeWord(submission.subreddit.display_name)
-        title = changeWord(submission.title)
-        now = now + "__" + title + "__" + subredditname + "__" + oldFileExtension 
-        os.rename(filename, str(now))
+        subredditname = submission.subreddit.display_name
+        if(showDebugMessages):
+            print('5.1: renaming file')
+        title = submission.title
+        if(showDebugMessages):
+            print('5.2: renaming file')
+        now = now + "__" + title + "__" + subredditname + "__"
+        if(showDebugMessages):
+            print('5.3: renaming file')
+        now = str(changeWord(str(now), showDebugMessages)) + str(oldFileExtension)
+        if(showDebugMessages):
+            print('5.4: renaming file')
+        os.rename(filename, now)
+        if(showDebugMessages):
+            print('5.5: renaming file')
         filename = str(now)
+        if(showDebugMessages):
+            print('5.6: renaming file')
         print('NEW FILENAME: ' + filename)
         
         if(showDebugMessages):
@@ -306,7 +305,7 @@ for submission in subredditstream:
         break;
     #print(str(submission.description.encode('utf-8')))
     #print(str(comment))
-    time.sleep(1)
+    time.sleep(3)
 
 print('number of times looped: ' + str(loops))
 os.chdir(homedirectory)
