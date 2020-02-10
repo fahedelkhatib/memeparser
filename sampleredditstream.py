@@ -219,7 +219,7 @@ subreddit = reddit.subreddit(subredditname)
 print('PRINTING POST STREAM FROM SUBREDDIT: r/' + subreddit.display_name + '\n\n')
 #print(subreddit.display_name)
 
-subredditstream = reddit.subreddit("memes+dankmemes+natureismetal+nukedmemes+deepfriedmemes+idiotsincars+worldnews+wellthatsucks+bingbongtheorem").stream.submissions()
+subredditstream = reddit.subreddit("nukedmemes+deepfriedmemes+idiotsincars+worldnews+wellthatsucks+bingbongtheorem").stream.submissions(skip_existing=False)
 
 #finalstream = subreddit.stream.submissions() + subredditstream
 
@@ -228,6 +228,7 @@ subredditstream = reddit.subreddit("memes+dankmemes+natureismetal+nukedmemes+dee
 for submission in subredditstream:
 #for submission in subreddit.stream.submissions(skip_existing=False):
     print("Loop Number: " + str(loops))
+    print("Loop Time: " + str(time.strftime("%c,%H")))
     print("Number downloaded: " + str(imagescounted))
     loops = loops + 1
     printPostInformation(submission, debugLogFileName)
@@ -237,13 +238,8 @@ for submission in subredditstream:
             print('1: --trying--')
 
         filename = wget.download(submission.url)
-        print('\n\t\ttask failed successfuly')
+        print('\n\t\tdownload failed successfuly')
         
-        if(filename.endswith('.wget')):
-            print('\t\t\tUH OH! YOU FUCKING BUFFOON! YOU MORON!')
-        else:
-            imagesqueried = imagesqueried + 1
-            
         #saves filename while simultaneously attempting download
         print('\nFILENAME: ' + str(filename))
         #prints filename for logging purposes
