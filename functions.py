@@ -2,11 +2,12 @@ bpygame = True;
 
 import praw
 import time
-from time import gmtime, strftime
+#from time import gmtime, strftime
 import os
 import wget
 #from zipfile import ZipFile #play with this after figuring out how to name files
 from datetime import datetime
+
 if(bpygame == True):
     import pygame
 #import ffmpeg
@@ -171,9 +172,19 @@ def createSubredditInstance(reddit, subredditname):
     print('PRINTING POST STREAM FROM SUBREDDIT: r/' + subreddit.display_name + '\n\n')
     #print(subreddit.display_name)
 
-    subredditstream = reddit.subreddit("nukedmemes+deepfriedmemes+bingbongtheorem").stream.submissions(skip_existing=False)
+    subredditstream = reddit.subreddit(subredditname).stream.submissions(skip_existing=False)
     
     return subredditstream
+
+def printFailMessage(now, loops, showDebugMessages):
+    if(showDebugMessages):
+        print("\n\t\tGENERATING FAILURE REPORT")
+        if(now):
+            print("\t\t\tFinal Title: " + str(now))
+        else:
+            print("\t\t\ttitle not created yet")
+        print("\t\t\tLoop Number: " + str(loops))
+    
 
 def mainRedditLoop(subredditstream, showDebugMessages, debugLogFileName):
 
@@ -239,6 +250,7 @@ def mainRedditLoop(subredditstream, showDebugMessages, debugLogFileName):
             if(showDebugMessages):
                 print('5.4: renaming file')
                 print("5.4: working directory: " + str(os.getcwd()))
+            #time.sleep(5)
             os.rename(filename, now)
             
             if(showDebugMessages):
@@ -258,6 +270,7 @@ def mainRedditLoop(subredditstream, showDebugMessages, debugLogFileName):
             if(showDebugMessages):
                 print('-1')
             print('\n--------FAIL MESSAGE---------')
+            printFailMessage(now, loops, showDebugMessages)
             #imagescounted = imagescounted - 1
 
         print('\n******************************************************')
@@ -265,7 +278,7 @@ def mainRedditLoop(subredditstream, showDebugMessages, debugLogFileName):
             break;
         #print(str(submission.description.encode('utf-8')))
         #print(str(comment))
-        time.sleep(3)
+        time.sleep(1)
 
 
 
