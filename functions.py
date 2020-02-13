@@ -172,7 +172,7 @@ def createSubredditInstance(reddit, subredditname):
     print('PRINTING POST STREAM FROM SUBREDDIT: r/' + subreddit.display_name + '\n\n')
     #print(subreddit.display_name)
 
-    subredditstream = reddit.subreddit(subredditname).stream.submissions(skip_existing=False)
+    subredditstream = reddit.subreddit(subredditname).stream.submissions(skip_existing=True)
     
     return subredditstream
 

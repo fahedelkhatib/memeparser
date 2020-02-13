@@ -9,7 +9,7 @@ debugLogFileName = 'C:\\users\\pc\\documents\\memeparser\\debuglog.txt'
 functions.os.system('cls')
 print('okay, so you got this far')
 subredditname = input('so then... tell me which subreddit you want to monitor, my precious :)\n')
-subredditname = 'nukedmemes+deepfriedmemes+worldnews+gifs+comedyhomicide'
+subredditname = 'nukedmemes+deepfriedmemes+gifs+comedyhomicide+trashy+Bossfight+starterpacks+OldSchoolCool+lifehacks+pyrocynical+BuyItForLife+HistoryPorn+FilthyFrank'
 #subredditname = 'all'
 bVerifySubreddit = input("Are you sure? I don't judge! (answer True or False)\n")
 bVerifySubreddit = 't'
