@@ -1,7 +1,9 @@
 import discord
 import time
+import token
 
 client = discord.Client()
+bot_token = token.get_token()
 
 @client.event
 async def on_ready():
@@ -21,4 +23,4 @@ async def on_message(message):
         print('time-prompted message sent: cock')
     
 
-client.run('Njc3NjI1NjAxNzU4MDY4ODA0.XkW-5w.UaLV0uSMsT1W1oZp92IhicpI0-I')#that string is the bot token for cock#9160
+client.run(bot_token)#that string is the bot token for cock#9160
