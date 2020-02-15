@@ -1,9 +1,9 @@
 import discord
 import time
-import token
+import tokensyeah
 
 client = discord.Client()
-bot_token = token.get_token()
+bot_token = tokensyeah.get_token()
 
 @client.event
 async def on_ready():
