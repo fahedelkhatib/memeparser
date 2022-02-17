@@ -5,7 +5,9 @@ r = praw.Reddit(client_id='LJ2JgRga7CP6Cw',
              user_agent='windows:com.mrfalafel.memescraper:v1.0.0'
              )
 
-
+#these two functions were obtained from the following stackoverflow thread
+#https://stackoverflow.com/questions/36366388/get-all-comments-from-a-specific-reddit-thread-in-python/36377995#36377995
+#thank you to OP for making my life wildly easier
 def getSubComments(comment, allComments, verbose=True):
   allComments.append(comment)
   if not hasattr(comment, "replies"):
@@ -15,7 +17,6 @@ def getSubComments(comment, allComments, verbose=True):
     replies = comment.replies
   for child in replies:
     getSubComments(child, allComments, verbose=verbose)
-
 
 def getAll(r, submissionId, verbose=True):
   submission = r.submission(submissionId)
