@@ -15,7 +15,7 @@ def play(filename):
     pygame.mixer.music.queue(filename)    
     pygame.mixer.music.play()
     #return pygame.mixer.Sound.get_length()
-    print('ADDED MP3 TO QUEUE')
+    #print('ADDED MP3 TO QUEUE')
 
 #opens file and commits contents to python string
 def stringifyfile(inputfilename):
@@ -91,21 +91,21 @@ homedirectory = str(os.getcwd())
 
 reddit = initializeRedditInstance()
 
-subreddit = reddit.subreddit('redditdev')
+# subreddit = reddit.subreddit('redditdev')
 
-print(reddit.domain('imgur.com').new())
+# print(reddit.domain('imgur.com').new())
 
-print(subreddit.display_name)
-print(subreddit.title)
-#print(subreddit.description)
+# print(subreddit.display_name)
+# print(subreddit.title)
+# #print(subreddit.description)
 
-for submission in subreddit.new(limit=7):
-    print(submission.title)    
-    #print(reddit.read_only)
-    time.sleep(0.1)
-    print('---------------------------------------------')
+# for submission in subreddit.new(limit=7):
+#     print(submission.title)    
+#     #print(reddit.read_only)
+#     time.sleep(0.1)
+#     print('---------------------------------------------')
 
-subredditpullcompleted()
+# subredditpullcompleted()
 
 #######################################################################
 #######################################################################
@@ -124,7 +124,7 @@ downloadpath = input("Where would you like to download these memes? \n")#.encode
 print("the path you have chosen is: " + str(downloadpath))
 
 
-submissions = reddit.subreddit(subredditname).top(limit=querylimit)
+submissions = reddit.subreddit(subredditname).new(limit=querylimit)
 try:
     os.mkdir(downloadpath)
 except:
@@ -153,4 +153,6 @@ for submission in submissions:
 
 
 displayAnalytics(imagesqueried, imagescounted)
-subredditpullcompleted()
+#subredditpullcompleted()
+
+

@@ -12,6 +12,33 @@ if(bpygame == True):
     import pygame
 #import ffmpeg
 
+def play(filename):
+    pygame.mixer.init()
+    pygame.mixer.music.load(filename)
+    #if pygame.mixer.music.get_busy() == True :
+    pygame.mixer.music.queue(filename)    
+    pygame.mixer.music.play()
+    #return pygame.mixer.Sound.get_length()
+    #print('ADDED MP3 TO QUEUE')
+
+
+def playdebugmessage(debugmessagetitle):
+    filename = debugmessagetitle
+    input1 = 'take 2 subreddit pull complete'
+    #tts = gTTS(text=input1,lang='es')
+    #tts.save(filename)
+    play(filename)
+    print('debugmessage played\n')
+
+
+def subredditpullcompleted():
+    srpc = "subredditpullcompleted.mp3"
+    #playdebugmessage("subredditpullcompleted.mp3")
+    playdebugmessage(srpc.encode('utf-8'))
+    #playdebugmessage(srpc)
+    time.sleep(4)
+
+
 def initializeRedditInstance():
     redditObject = praw.Reddit(client_id='LJ2JgRga7CP6Cw',
              client_secret='WJ-I1ZbsCVz8F3Tz-XFyua7iqhE',
@@ -61,6 +88,8 @@ def changeWord(word, showDebugMessages):
         if letter == "|":
             word = word.replace(letter,"_")
         if letter == ".":
+            word = word.replace(letter,"_")
+        if letter == "\"":
             word = word.replace(letter,"_")
     if(showDebugMessages == True):
         print('\tNEW WORD: ' + word)
@@ -115,7 +144,10 @@ def displayAnalytics(imagesqueried, imagescounted):
 def printPostInformation(submission, debugLogFileName):
     print('Post title: ' + str(submission.title.encode('utf-8')))
     print('Post URL: ' + str(submission.url.encode('utf-8')))
-    print('Post Author: ' + str(submission.author.name.encode('utf-8')))
+    try:
+        print('Post Author: ' + str(submission.author.name.encode('utf-8')))
+    except:
+        print('Post Author: ' + '[deleted]')
     print('Number of Comments: ' + str(submission.num_comments))
     print('Subreddit Name: ' + str(submission.subreddit.display_name.encode('utf-8')))
 
@@ -191,6 +223,7 @@ def mainRedditLoop(subredditstream, showDebugMessages, debugLogFileName):
     imagescounted = 0
     imagesqueried = 0
     loops = 0
+    downloadpath = input("where's it gonna go boss?\n")
 
     for submission in subredditstream:
     #for submission in subreddit.stream.submissions(skip_existing=False):
@@ -200,10 +233,14 @@ def mainRedditLoop(subredditstream, showDebugMessages, debugLogFileName):
         loops = loops + 1
         printPostInformation(submission, debugLogFileName)
         
+        
         try:
             if(showDebugMessages):
                 print('1: --trying--')
 
+            #new addition, change download path to custom
+            
+            os.chdir(downloadpath)
             filename = wget.download(submission.url)
             print('\n\t\tdownload failed successfuly')
             
@@ -280,7 +317,8 @@ def mainRedditLoop(subredditstream, showDebugMessages, debugLogFileName):
         #print(str(comment))
         time.sleep(1)
 
-
+reddit = initializeRedditInstance()
+mainRedditLoop(reddit.subreddit('2middleeast4you').top(limit=10), True, "log.txt")
 
 ##################################################################################
 ##################################################################################
